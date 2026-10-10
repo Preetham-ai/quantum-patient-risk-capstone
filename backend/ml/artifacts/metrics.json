@@ -1,0 +1,163 @@
+{
+  "condition": "heart",
+  "n_qubits": 4,
+  "selected_features": [
+    "thal",
+    "cp",
+    "exang",
+    "oldpeak"
+  ],
+  "n_train": 242,
+  "n_test": 61,
+  "classical_baselines": {
+    "logreg": {
+      "auroc": {
+        "mean": 0.8523,
+        "std": 0.0662
+      },
+      "accuracy": {
+        "mean": 0.7987,
+        "std": 0.0598
+      },
+      "f1": {
+        "mean": 0.8148,
+        "std": 0.0547
+      },
+      "sensitivity": {
+        "mean": 0.8121,
+        "std": 0.0618
+      },
+      "specificity": {
+        "mean": 0.7834,
+        "std": 0.089
+      },
+      "brier_score": {
+        "mean": 0.1501,
+        "std": 0.0368
+      }
+    },
+    "svm_rbf": {
+      "auroc": {
+        "mean": 0.8534,
+        "std": 0.0629
+      },
+      "accuracy": {
+        "mean": 0.7792,
+        "std": 0.0644
+      },
+      "f1": {
+        "mean": 0.8039,
+        "std": 0.0576
+      },
+      "sensitivity": {
+        "mean": 0.8303,
+        "std": 0.0732
+      },
+      "specificity": {
+        "mean": 0.7182,
+        "std": 0.1167
+      },
+      "brier_score": {
+        "mean": 0.1574,
+        "std": 0.0422
+      }
+    },
+    "random_forest": {
+      "auroc": {
+        "mean": 0.8502,
+        "std": 0.0323
+      },
+      "accuracy": {
+        "mean": 0.7791,
+        "std": 0.0425
+      },
+      "f1": {
+        "mean": 0.8006,
+        "std": 0.0356
+      },
+      "sensitivity": {
+        "mean": 0.8121,
+        "std": 0.0402
+      },
+      "specificity": {
+        "mean": 0.7405,
+        "std": 0.0861
+      },
+      "brier_score": {
+        "mean": 0.1602,
+        "std": 0.0231
+      }
+    },
+    "xgboost": {
+      "auroc": {
+        "mean": 0.8236,
+        "std": 0.0227
+      },
+      "accuracy": {
+        "mean": 0.7526,
+        "std": 0.0382
+      },
+      "f1": {
+        "mean": 0.7777,
+        "std": 0.0321
+      },
+      "sensitivity": {
+        "mean": 0.794,
+        "std": 0.0521
+      },
+      "specificity": {
+        "mean": 0.7042,
+        "std": 0.0945
+      },
+      "brier_score": {
+        "mean": 0.1807,
+        "std": 0.0302
+      }
+    },
+    "mlp": {
+      "auroc": {
+        "mean": 0.7674,
+        "std": 0.0644
+      },
+      "accuracy": {
+        "mean": 0.4554,
+        "std": 0.0044
+      },
+      "f1": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "sensitivity": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "specificity": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "brier_score": {
+        "mean": 0.2759,
+        "std": 0.0026
+      }
+    }
+  },
+  "quantum_models": {
+    "vqc": {
+      "accuracy": 0.4918,
+      "auroc": 0.5418,
+      "parameters": 16,
+      "circuit_type": "ZZFeatureMap + RealAmplitudes"
+    },
+    "qsvm": {
+      "accuracy": 0.7049,
+      "auroc": 0.7649,
+      "kernel": "FidelityQuantumKernel",
+      "support_vectors": 130
+    },
+    "hybrid_qnn": {
+      "accuracy": 0.72,
+      "auroc": 0.5318,
+      "framework": "PennyLane + PyTorch"
+    }
+  }
+}
