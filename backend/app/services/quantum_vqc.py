@@ -155,16 +155,20 @@ class VariationalQuantumClassifier:
         # Fit calibration scale & bias
         exp_vals = np.array([self.predict_expectation(x) for x in X_sub])
         y_sub_arr = np.array(y_sub)
-        # Find best threshold / bias
-        best_b = 0.0
-        best_acc = 0.0
-        for b in np.linspace(-1.5, 1.5, 30):
-            preds = (1.0 / (1.0 + np.exp(-exp_vals + b))) >= 0.5
-            acc = np.mean(preds == y_sub_arr)
-            if acc > best_acc:
-                best_acc = acc
-                best_b = b
-        self.bias = best_b
+
+        best_loss = float("inf")
+        best_s, best_b = 2.5, 0.0
+        for s in np.linspace(1.5, 4.5, 15):
+            for b in np.linspace(-2.0, 2.0, 25):
+                logits = s * (-exp_vals) + b
+                p = np.clip(1.0 / (1.0 + np.exp(-logits)), 1e-4, 1.0 - 1e-4)
+                loss = -np.mean(y_sub_arr * np.log(p) + (1.0 - y_sub_arr) * np.log(1.0 - p))
+                if loss < best_loss:
+                    best_loss = loss
+                    best_s = s
+                    best_b = b
+        self.scale = float(best_s)
+        self.bias = float(best_b)
 
     def save_weights(self, filepath: str):
         os.makedirs(os.path.dirname(filepath), exist_ok=True)

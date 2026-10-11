@@ -57,7 +57,7 @@ def run_full_training(condition: str = "heart", n_qubits: int = 4, seed: int = 4
     # 3. Model A: Qiskit VQC Training
     print("\n[Step 3/5] Training Model A: Variational Quantum Classifier (VQC)...")
     vqc = VariationalQuantumClassifier(n_qubits=n_qubits, reps_feature=2, reps_ansatz=3, seed=seed)
-    vqc.fit(X_train_angles, y_train, maxiter=30)
+    vqc.fit(X_train_angles, y_train, maxiter=45, lr=0.2)
     vqc_path = os.path.join(artifacts_dir, f"{condition}_vqc_params.json")
     vqc.save_weights(vqc_path)
     
@@ -69,7 +69,13 @@ def run_full_training(condition: str = "heart", n_qubits: int = 4, seed: int = 4
     # 4. Model B: Quantum Kernel SVM (QSVM)
     print("\n[Step 4/5] Training Model B: Quantum Kernel SVM (QSVM)...")
     qsvm = QuantumKernelSVM(n_qubits=n_qubits, reps=2, c_param=1.0)
-    qsvm.fit(X_train_angles, y_train)
+    if len(X_train_angles) > 100:
+        from sklearn.model_selection import StratifiedShuffleSplit
+        sss = StratifiedShuffleSplit(n_splits=1, train_size=100, random_state=seed)
+        sub_idx, _ = next(sss.split(X_train_angles, y_train))
+        qsvm.fit(X_train_angles[sub_idx], y_train[sub_idx])
+    else:
+        qsvm.fit(X_train_angles, y_train)
     qsvm_preds, _ = qsvm.evaluate_test(X_test_angles)
     qsvm_acc = float(np.mean(qsvm_preds == y_test))
     qsvm.save_model(os.path.join(artifacts_dir, f"{condition}_qsvm.joblib"))

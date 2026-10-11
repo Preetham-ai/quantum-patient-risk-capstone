@@ -94,7 +94,7 @@ async def predict_patient_risk(req: PredictRequest):
             model_choice = "vqc"
             risk_prob = vqc.predict_proba_single(x_vec)
             
-        risk_level = "High" if risk_prob > 0.65 else ("Medium" if risk_prob >= 0.35 else "Low")
+        risk_level = "High" if risk_prob >= 0.65 else ("Medium" if risk_prob >= 0.35 else "Low")
         
         # 3. Build bound quantum circuit for 3D state simulation
         circuit = vqc.build_full_circuit(x_vec)

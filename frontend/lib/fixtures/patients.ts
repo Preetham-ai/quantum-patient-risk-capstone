@@ -32,7 +32,7 @@ export const PATIENT_FIXTURES: Record<"low" | "medium" | "high", PatientFixture>
     vitals: {
       age: 42,
       sex: 0,
-      cp: 0,
+      cp: 2,
       trestbps: 118,
       chol: 185,
       fbs: 0,
@@ -218,7 +218,7 @@ export const PATIENT_FIXTURES: Record<"low" | "medium" | "high", PatientFixture>
     vitals: {
       age: 65,
       sex: 1,
-      cp: 3,
+      cp: 0,
       trestbps: 162,
       chol: 288,
       fbs: 1,

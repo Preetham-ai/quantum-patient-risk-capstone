@@ -65,12 +65,63 @@ export async function runPredict(
 
   const angles = [v0, v1, v2, v3];
 
-  // Parity / expectation value
-  const isHigh = (vitals.oldpeak ?? 1.2) > 1.8 || (vitals.cp ?? 1) === 0 || (vitals.ca ?? 0) >= 2;
-  const riskProb = isHigh ? 0.784 : (vitals.trestbps ?? 135) > 140 ? 0.528 : 0.215;
-  const riskLevel = riskProb > 0.65 ? "High" : riskProb > 0.35 ? "Medium" : "Low";
+  // Continuous physiological risk grading
+  let rawRisk = 0.15; // baseline healthy young adult
+
+  if (condition === "heart") {
+    const oldpeak = vitals.oldpeak ?? 0.8;
+    const ca = vitals.ca ?? 0;
+    const exang = vitals.exang ?? 0;
+    const thalach = vitals.thalach ?? 150;
+    const cp = vitals.cp ?? 2;
+    const bp = vitals.trestbps ?? 125;
+    const age = vitals.age ?? 50;
+
+    // ST Depression (oldpeak mm) - dominant ischemic marker
+    if (oldpeak >= 2.5) rawRisk += 0.28;
+    else if (oldpeak >= 1.5) rawRisk += 0.18;
+    else if (oldpeak >= 0.8) rawRisk += 0.08;
+
+    // Fluoroscopy Coronary Vessels (ca 0..3)
+    if (ca >= 3) rawRisk += 0.26;
+    else if (ca >= 2) rawRisk += 0.18;
+    else if (ca >= 1) rawRisk += 0.10;
+
+    // Exercise-induced angina
+    if (exang === 1) rawRisk += 0.12;
+
+    // Chest pain type (0: typical angina, 1: atypical, 2: non-anginal, 3: asymptomatic)
+    if (cp === 0) rawRisk += 0.14;
+    else if (cp === 1) rawRisk += 0.06;
+
+    // Blunted chronotropic capacity (thalach < 120 bpm)
+    if (thalach < 118) rawRisk += 0.08;
+    else if (thalach < 138) rawRisk += 0.04;
+
+    // Blood pressure
+    if (bp >= 155) rawRisk += 0.08;
+    else if (bp >= 135) rawRisk += 0.04;
+
+    // Age
+    if (age >= 65) rawRisk += 0.08;
+    else if (age >= 55) rawRisk += 0.04;
+  } else {
+    // Diabetes / Pima
+    const glucose = vitals.Glucose ?? 100;
+    const bmi = vitals.BMI ?? 25;
+    const age = vitals.Age ?? 35;
+    if (glucose >= 150) rawRisk += 0.35;
+    else if (glucose >= 120) rawRisk += 0.18;
+    if (bmi >= 35) rawRisk += 0.20;
+    else if (bmi >= 30) rawRisk += 0.10;
+    if (age >= 50) rawRisk += 0.10;
+  }
+
+  const riskProb = Math.min(0.92, Math.max(0.12, Math.round(rawRisk * 1000) / 1000));
+  const riskLevel = riskProb >= 0.65 ? "High" : riskProb >= 0.35 ? "Medium" : "Low";
 
   // Basis state probabilities
+  const isHigh = riskLevel === "High";
   const probs: Record<string, number> = {};
   for (let i = 0; i < 16; i++) {
     const bstr = i.toString(2).padStart(4, "0");

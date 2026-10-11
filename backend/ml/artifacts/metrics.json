@@ -2,125 +2,125 @@
   "condition": "heart",
   "n_qubits": 4,
   "selected_features": [
-    "thal",
     "cp",
-    "exang",
-    "oldpeak"
+    "thalach",
+    "oldpeak",
+    "ca"
   ],
   "n_train": 242,
   "n_test": 61,
   "classical_baselines": {
     "logreg": {
       "auroc": {
-        "mean": 0.8523,
-        "std": 0.0662
+        "mean": 0.8727,
+        "std": 0.0217
       },
       "accuracy": {
-        "mean": 0.7987,
-        "std": 0.0598
+        "mean": 0.792,
+        "std": 0.0139
       },
       "f1": {
-        "mean": 0.8148,
-        "std": 0.0547
+        "mean": 0.765,
+        "std": 0.0214
       },
       "sensitivity": {
-        "mean": 0.8121,
-        "std": 0.0618
+        "mean": 0.7466,
+        "std": 0.0544
       },
       "specificity": {
-        "mean": 0.7834,
-        "std": 0.089
+        "mean": 0.8303,
+        "std": 0.0453
       },
       "brier_score": {
-        "mean": 0.1501,
-        "std": 0.0368
+        "mean": 0.1446,
+        "std": 0.0121
       }
     },
     "svm_rbf": {
       "auroc": {
-        "mean": 0.8534,
-        "std": 0.0629
+        "mean": 0.8753,
+        "std": 0.0336
       },
       "accuracy": {
-        "mean": 0.7792,
-        "std": 0.0644
+        "mean": 0.8016,
+        "std": 0.0517
       },
       "f1": {
-        "mean": 0.8039,
-        "std": 0.0576
+        "mean": 0.7693,
+        "std": 0.0584
       },
       "sensitivity": {
-        "mean": 0.8303,
-        "std": 0.0732
+        "mean": 0.7241,
+        "std": 0.0525
       },
       "specificity": {
-        "mean": 0.7182,
-        "std": 0.1167
+        "mean": 0.8667,
+        "std": 0.0732
       },
       "brier_score": {
-        "mean": 0.1574,
-        "std": 0.0422
+        "mean": 0.1411,
+        "std": 0.0215
       }
     },
     "random_forest": {
       "auroc": {
-        "mean": 0.8502,
-        "std": 0.0323
+        "mean": 0.8557,
+        "std": 0.0324
       },
       "accuracy": {
-        "mean": 0.7791,
-        "std": 0.0425
+        "mean": 0.7952,
+        "std": 0.0369
       },
       "f1": {
-        "mean": 0.8006,
-        "std": 0.0356
+        "mean": 0.7636,
+        "std": 0.0397
       },
       "sensitivity": {
-        "mean": 0.8121,
-        "std": 0.0402
+        "mean": 0.7243,
+        "std": 0.0316
       },
       "specificity": {
-        "mean": 0.7405,
-        "std": 0.0861
+        "mean": 0.8546,
+        "std": 0.0588
       },
       "brier_score": {
-        "mean": 0.1602,
-        "std": 0.0231
+        "mean": 0.1521,
+        "std": 0.0234
       }
     },
     "xgboost": {
       "auroc": {
-        "mean": 0.8236,
-        "std": 0.0227
+        "mean": 0.8399,
+        "std": 0.0331
       },
       "accuracy": {
-        "mean": 0.7526,
-        "std": 0.0382
+        "mean": 0.7918,
+        "std": 0.051
       },
       "f1": {
-        "mean": 0.7777,
-        "std": 0.0321
+        "mean": 0.7634,
+        "std": 0.0601
       },
       "sensitivity": {
-        "mean": 0.794,
-        "std": 0.0521
+        "mean": 0.7383,
+        "std": 0.0574
       },
       "specificity": {
-        "mean": 0.7042,
-        "std": 0.0945
+        "mean": 0.8364,
+        "std": 0.0562
       },
       "brier_score": {
-        "mean": 0.1807,
-        "std": 0.0302
+        "mean": 0.162,
+        "std": 0.0284
       }
     },
     "mlp": {
       "auroc": {
-        "mean": 0.7674,
-        "std": 0.0644
+        "mean": 0.2803,
+        "std": 0.0631
       },
       "accuracy": {
-        "mean": 0.4554,
+        "mean": 0.5446,
         "std": 0.0044
       },
       "f1": {
@@ -136,27 +136,27 @@
         "std": 0.0
       },
       "brier_score": {
-        "mean": 0.2759,
-        "std": 0.0026
+        "mean": 0.2685,
+        "std": 0.0031
       }
     }
   },
   "quantum_models": {
     "vqc": {
-      "accuracy": 0.4918,
-      "auroc": 0.5418,
+      "accuracy": 0.4262,
+      "auroc": 0.4762,
       "parameters": 16,
       "circuit_type": "ZZFeatureMap + RealAmplitudes"
     },
     "qsvm": {
-      "accuracy": 0.7049,
-      "auroc": 0.7649,
+      "accuracy": 0.6721,
+      "auroc": 0.7321,
       "kernel": "FidelityQuantumKernel",
-      "support_vectors": 130
+      "support_vectors": 86
     },
     "hybrid_qnn": {
       "accuracy": 0.72,
-      "auroc": 0.5318,
+      "auroc": 0.4662,
       "framework": "PennyLane + PyTorch"
     }
   }

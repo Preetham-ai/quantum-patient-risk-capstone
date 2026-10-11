@@ -50,8 +50,14 @@ class ClinicalDataPreprocessor:
         
         if self.condition == "heart":
             target_col = "target"
+            # Recode cp to clinical severity: 0 (typical angina) -> 3, 1 (atypical) -> 2, 2 (non-anginal) -> 1, 3 (asymptomatic) -> 0
+            df["cp"] = df["cp"].map({0: 3, 1: 2, 2: 1, 3: 0})
+            # Invert thalach so higher value = higher chronotropic deficit / cardiovascular risk
+            df["thalach"] = 220 - df["thalach"]
             X = df.drop(columns=[target_col])
-            y = df[target_col].astype(int)
+            # In Cleveland CSV, target 0 = heart disease presence, target 1 = healthy absence.
+            # In clinical disease risk prediction, y=1 represents Disease / High Risk.
+            y = (1 - df[target_col]).astype(int)
         else:
             target_col = "Outcome"
             # In Pima, zeros in these columns represent physiological missing data
@@ -105,8 +111,11 @@ class ClinicalDataPreprocessor:
             reverse=True
         ))
         
-        # Pick top n_qubits features
-        self.selected_features = list(self.mi_scores.keys())[:self.n_qubits]
+        # Pick top n_qubits features: for 4-qubit cardiac model, use the core 4 clinical biomarkers
+        if self.condition == "heart" and self.n_qubits == 4:
+            self.selected_features = ["cp", "thalach", "oldpeak", "ca"]
+        else:
+            self.selected_features = list(self.mi_scores.keys())[:self.n_qubits]
         
         X_train_sub = X_train_raw[self.selected_features]
         X_test_sub = X_test_raw[self.selected_features]
@@ -133,7 +142,13 @@ class ClinicalDataPreprocessor:
         # Build DataFrame with all raw features
         row = {}
         for f in self.feature_names:
-            row[f] = float(vitals.get(f, 0.0))
+            val = float(vitals.get(f, 0.0))
+            if f == "cp":
+                # Recode cp to clinical severity: 0 (typical) -> 3, 1 (atypical) -> 2, 2 (non-anginal) -> 1, 3 (asymptomatic) -> 0
+                val = float({0: 3, 1: 2, 2: 1, 3: 0}.get(int(val), val))
+            elif f == "thalach":
+                val = float(220 - val)
+            row[f] = val
             
         df_single = pd.DataFrame([row])
         df_imputed = pd.DataFrame(
