@@ -2,114 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #080d1a;
-  --foreground: #f1f5f9;
-  --clinical-teal: #14b8a6;
-  --clinical-cyan: #38bdf8;
-  --cardiac-rose: #f43f5e;
-}
+@layer base {
+  :root {
+    --ink: #0B0D12;
+    --bone: #EDE7DB;
+    --amber-signal: #FFB347;
+    --risk-low: #7FB59A;
+    --risk-med: #FFB347;
+    --risk-high: #E5484D;
+  }
 
-body {
-  color: #f1f5f9;
-  background: #080d1a;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  overflow-x: hidden;
-}
+  body {
+    color: #EDE7DB;
+    background-color: #0B0D12;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: hidden;
+    position: relative;
+  }
 
-/* Moving Soft Ambient Background Animations */
-@keyframes aurora-flow {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -40px) scale(1.08);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.95);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
+  /* Headings typography */
+  h1, h2, h3, .font-display {
+    font-family: 'Fraunces', 'Instrument Serif', Georgia, serif;
+    letter-spacing: -0.02em;
   }
 }
 
-@keyframes aurora-flow-reverse {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(-30px, 30px) scale(1.06);
-  }
-  66% {
-    transform: translate(25px, -25px) scale(0.94);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
+/* Subtle Film Grain Overlay (CSS Only, 3.5% Opacity) */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-.animate-aurora-1 {
-  animation: aurora-flow 20s ease-in-out infinite;
-}
-
-.animate-aurora-2 {
-  animation: aurora-flow-reverse 24s ease-in-out infinite;
-}
-
-/* Luminous Clinical Titanium Mesh Background */
-.clinical-mesh-bg {
-  background-color: #080d1a;
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.12) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.10) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(15, 23, 42, 0.6) 0px, transparent 50%);
-}
-
-.clinical-subtle-grid {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(51, 65, 85, 0.15) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(51, 65, 85, 0.15) 1px, transparent 1px);
-}
-
-/* Titanium Glassmorphic Cards */
-.glass-card {
-  background: rgba(15, 23, 42, 0.75);
+/* Frosted Glass Panels */
+.glass-panel {
+  background: rgba(18, 21, 29, 0.78);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 65, 85, 0.6);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(237, 231, 219, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cardiac Pulse Animation */
-@keyframes cardiac-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.04);
-    opacity: 1;
-    filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.5));
-  }
+.glass-panel-subtle {
+  background: rgba(24, 28, 38, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(237, 231, 219, 0.06);
 }
 
-.animate-cardiac-pulse {
-  animation: cardiac-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Tabular Mono Numbers */
+.font-mono-numbers {
+  font-family: '"JetBrains Mono"', Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Custom Scrollbars */
+/* Subtle Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #080d1a;
+  background: #0B0D12;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 3px;
+  background: rgba(237, 231, 219, 0.15);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #14b8a6;
+  background: rgba(255, 179, 71, 0.35);
+}
+
+/* Print Stylesheet for 1-Page PDF Report Export */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+  .no-print, header, footer, .grain-overlay, button {
+    display: none !important;
+  }
+  .glass-panel {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+    color: #111827 !important;
+  }
+  .print-page {
+    page-break-inside: avoid;
+  }
 }

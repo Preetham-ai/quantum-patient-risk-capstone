@@ -1,0 +1,306 @@
+/**
+ * frontend/lib/fixtures/patients.ts
+ * Pre-loaded, non-zero clinical patient fixtures for instant wow and reliable fallback.
+ */
+
+import { PredictResponse } from "../types";
+
+export interface PatientFixture {
+  id: "low" | "medium" | "high";
+  name: string;
+  tagline: string;
+  vitals: Record<string, number>;
+  result: PredictResponse & {
+    ci: [number, number];
+    counterfactual: string;
+    model_comparison: {
+      vqc: number;
+      qsvm: number;
+      hybrid: number;
+      rf: number;
+      xgb: number;
+      logreg: number;
+    };
+  };
+}
+
+export const PATIENT_FIXTURES: Record<"low" | "medium" | "high", PatientFixture> = {
+  low: {
+    id: "low",
+    name: "Patient A — Optimal Biomarkers",
+    tagline: "Normotensive 42-year-old with optimal treadmill chronotropic capacity and clear coronary vessels.",
+    vitals: {
+      age: 42,
+      sex: 0,
+      cp: 0,
+      trestbps: 118,
+      chol: 185,
+      fbs: 0,
+      restecg: 0,
+      thalach: 168,
+      exang: 0,
+      oldpeak: 0.2,
+      slope: 0,
+      ca: 0,
+      thal: 2,
+    },
+    result: {
+      condition: "heart",
+      risk_probability: 0.18,
+      risk_level: "Low",
+      model: "vqc",
+      n_qubits: 4,
+      features_used: ["cp", "thalach", "oldpeak", "ca"],
+      encoded_angles: [0.45, 2.35, 0.30, 0.20],
+      ci: [0.14, 0.22],
+      circuit: [
+        { layer: 0, gate: "H", qubits: [0, 1, 2, 3] },
+        { layer: 1, gate: "Rz", qubits: [0], param: 0.45 },
+        { layer: 1, gate: "Rz", qubits: [1], param: 2.35 },
+        { layer: 1, gate: "Rz", qubits: [2], param: 0.30 },
+        { layer: 1, gate: "Rz", qubits: [3], param: 0.20 },
+        { layer: 2, gate: "CNOT", qubits: [0, 1] },
+        { layer: 2, gate: "CNOT", qubits: [1, 2] },
+        { layer: 2, gate: "CNOT", qubits: [2, 3] },
+        { layer: 3, gate: "Ry", qubits: [0, 1, 2, 3], param: 0.18 },
+      ],
+      qubit_states: [
+        { qubit: 0, bloch: [0.43, 0.05, 0.90], purity: 0.98 },
+        { qubit: 1, bloch: [0.71, -0.08, -0.70], purity: 0.97 },
+        { qubit: 2, bloch: [0.30, 0.02, 0.95], purity: 0.96 },
+        { qubit: 3, bloch: [0.20, 0.01, 0.98], purity: 0.99 },
+      ],
+      entanglement: [
+        [1.0, 0.18, 0.14, 0.12],
+        [0.18, 1.0, 0.22, 0.15],
+        [0.14, 0.22, 1.0, 0.19],
+        [0.12, 0.15, 0.19, 1.0],
+      ],
+      state_probabilities: {
+        "0000": 0.42,
+        "0001": 0.12,
+        "0010": 0.11,
+        "0011": 0.06,
+        "0100": 0.09,
+        "0101": 0.04,
+        "0110": 0.03,
+        "0111": 0.02,
+        "1000": 0.04,
+        "1001": 0.02,
+        "1010": 0.02,
+        "1011": 0.01,
+        "1100": 0.01,
+        "1101": 0.005,
+        "1110": 0.003,
+        "1111": 0.002,
+      },
+      explanation: {
+        "Max Heart Rate (thalach)": -0.34,
+        "Isoelectric ST Segment (oldpeak)": -0.28,
+        "No Stenosed Vessels (ca)": -0.22,
+        "Asymptomatic Angina (cp)": -0.16,
+      },
+      baselines: {
+        logreg: 0.21,
+        rf: 0.15,
+        xgb: 0.16,
+      },
+      model_comparison: {
+        vqc: 0.18,
+        qsvm: 0.19,
+        hybrid: 0.17,
+        rf: 0.15,
+        xgb: 0.16,
+        logreg: 0.21,
+      },
+      counterfactual: "Patient is in Low Risk status. Biomarkers are within ideal physiological parameters.",
+      disclaimer: "Academic research prototype strictly for Capstone PS #28. Not a certified medical diagnostic device.",
+    },
+  },
+
+  medium: {
+    id: "medium",
+    name: "Patient B — Borderline Hypertension & Fatigue",
+    tagline: "58-year-old with stage 1 systolic blood pressure, moderate ST depression, and single vessel involvement.",
+    vitals: {
+      age: 58,
+      sex: 1,
+      cp: 1,
+      trestbps: 138,
+      chol: 242,
+      fbs: 0,
+      restecg: 1,
+      thalach: 142,
+      exang: 0,
+      oldpeak: 1.4,
+      slope: 1,
+      ca: 1,
+      thal: 2,
+    },
+    result: {
+      condition: "heart",
+      risk_probability: 0.52,
+      risk_level: "Medium",
+      model: "vqc",
+      n_qubits: 4,
+      features_used: ["cp", "thalach", "oldpeak", "ca"],
+      encoded_angles: [1.25, 1.62, 1.45, 1.10],
+      ci: [0.47, 0.57],
+      circuit: [
+        { layer: 0, gate: "H", qubits: [0, 1, 2, 3] },
+        { layer: 1, gate: "Rz", qubits: [0], param: 1.25 },
+        { layer: 1, gate: "Rz", qubits: [1], param: 1.62 },
+        { layer: 1, gate: "Rz", qubits: [2], param: 1.45 },
+        { layer: 1, gate: "Rz", qubits: [3], param: 1.10 },
+        { layer: 2, gate: "CNOT", qubits: [0, 1] },
+        { layer: 2, gate: "CNOT", qubits: [1, 2] },
+        { layer: 2, gate: "CNOT", qubits: [2, 3] },
+        { layer: 3, gate: "Ry", qubits: [0, 1, 2, 3], param: 0.52 },
+      ],
+      qubit_states: [
+        { qubit: 0, bloch: [0.78, 0.12, 0.31], purity: 0.88 },
+        { qubit: 1, bloch: [0.85, 0.15, -0.05], purity: 0.86 },
+        { qubit: 2, bloch: [0.82, 0.18, 0.12], purity: 0.84 },
+        { qubit: 3, bloch: [0.72, 0.10, 0.45], purity: 0.89 },
+      ],
+      entanglement: [
+        [1.0, 0.42, 0.48, 0.38],
+        [0.42, 1.0, 0.46, 0.41],
+        [0.48, 0.46, 1.0, 0.44],
+        [0.38, 0.41, 0.44, 1.0],
+      ],
+      state_probabilities: {
+        "0000": 0.16,
+        "0001": 0.11,
+        "0010": 0.10,
+        "0011": 0.09,
+        "0100": 0.08,
+        "0101": 0.07,
+        "0110": 0.07,
+        "0111": 0.06,
+        "1000": 0.06,
+        "1001": 0.05,
+        "1010": 0.04,
+        "1011": 0.03,
+        "1100": 0.03,
+        "1101": 0.02,
+        "1110": 0.02,
+        "1111": 0.01,
+      },
+      explanation: {
+        "Elevated Resting Blood Pressure": 0.28,
+        "Borderline ST Depression (oldpeak)": 0.24,
+        "Single Stenosed Coronary Vessel": 0.19,
+        "Chronotropic Response Strain": 0.14,
+      },
+      baselines: {
+        logreg: 0.49,
+        rf: 0.55,
+        xgb: 0.53,
+      },
+      model_comparison: {
+        vqc: 0.52,
+        qsvm: 0.54,
+        hybrid: 0.51,
+        rf: 0.55,
+        xgb: 0.53,
+        logreg: 0.49,
+      },
+      counterfactual: "Lowering ST depression by 0.6 mm (to 0.8 mm) drops quantum risk to Low (38%).",
+      disclaimer: "Academic research prototype strictly for Capstone PS #28. Not a certified medical diagnostic device.",
+    },
+  },
+
+  high: {
+    id: "high",
+    name: "Patient C — Active Exertional Ischemia",
+    tagline: "65-year-old with multi-vessel fluoroscopy stenosis, severe exercise ST depression, and blunted heart rate.",
+    vitals: {
+      age: 65,
+      sex: 1,
+      cp: 3,
+      trestbps: 162,
+      chol: 288,
+      fbs: 1,
+      restecg: 2,
+      thalach: 112,
+      exang: 1,
+      oldpeak: 3.2,
+      slope: 2,
+      ca: 3,
+      thal: 3,
+    },
+    result: {
+      condition: "heart",
+      risk_probability: 0.78,
+      risk_level: "High",
+      model: "vqc",
+      n_qubits: 4,
+      features_used: ["cp", "thalach", "oldpeak", "ca"],
+      encoded_angles: [2.55, 0.85, 2.70, 2.45],
+      ci: [0.74, 0.82],
+      circuit: [
+        { layer: 0, gate: "H", qubits: [0, 1, 2, 3] },
+        { layer: 1, gate: "Rz", qubits: [0], param: 2.55 },
+        { layer: 1, gate: "Rz", qubits: [1], param: 0.85 },
+        { layer: 1, gate: "Rz", qubits: [2], param: 2.70 },
+        { layer: 1, gate: "Rz", qubits: [3], param: 2.45 },
+        { layer: 2, gate: "CNOT", qubits: [0, 1] },
+        { layer: 2, gate: "CNOT", qubits: [1, 2] },
+        { layer: 2, gate: "CNOT", qubits: [2, 3] },
+        { layer: 3, gate: "Ry", qubits: [0, 1, 2, 3], param: 0.78 },
+      ],
+      qubit_states: [
+        { qubit: 0, bloch: [0.55, 0.32, -0.72], purity: 0.74 },
+        { qubit: 1, bloch: [0.68, 0.28, 0.58], purity: 0.77 },
+        { qubit: 2, bloch: [0.42, 0.35, -0.80], purity: 0.71 },
+        { qubit: 3, bloch: [0.58, 0.30, -0.68], purity: 0.75 },
+      ],
+      entanglement: [
+        [1.0, 0.62, 0.74, 0.65],
+        [0.62, 1.0, 0.68, 0.61],
+        [0.74, 0.68, 1.0, 0.71],
+        [0.65, 0.61, 0.71, 1.0],
+      ],
+      state_probabilities: {
+        "0000": 0.02,
+        "0001": 0.03,
+        "0010": 0.03,
+        "0011": 0.05,
+        "0100": 0.04,
+        "0101": 0.06,
+        "0110": 0.07,
+        "0111": 0.09,
+        "1000": 0.04,
+        "1001": 0.06,
+        "1010": 0.07,
+        "1011": 0.10,
+        "1100": 0.08,
+        "1101": 0.11,
+        "1110": 0.12,
+        "1111": 0.28,
+      },
+      explanation: {
+        "Severe ST Depression (oldpeak)": 0.38,
+        "Chronotropic Incompetence (thalach)": 0.31,
+        "Multi-vessel Fluoroscopy Stenosis (ca)": 0.26,
+        "Exertional Angina Discomfort (cp)": 0.21,
+      },
+      baselines: {
+        logreg: 0.75,
+        rf: 0.84,
+        xgb: 0.83,
+      },
+      model_comparison: {
+        vqc: 0.78,
+        qsvm: 0.81,
+        hybrid: 0.80,
+        rf: 0.84,
+        xgb: 0.83,
+        logreg: 0.75,
+      },
+      counterfactual: "Normalizing coronary vessel patency and lowering ST depression by 1.4 mm drops risk to Medium (53%).",
+      disclaimer: "Academic research prototype strictly for Capstone PS #28. Not a certified medical diagnostic device.",
+    },
+  },
+};
