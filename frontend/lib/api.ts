@@ -229,3 +229,37 @@ export async function fetchMetrics(condition: string = "heart"): Promise<any> {
     },
   };
 }
+
+/**
+ * Resolves the appropriate WebSocket URL based on environment and browser protocol.
+ * Returns null if running in HTTPS without a configured WSS backend, allowing
+ * graceful fallback to the client-side simulated quantum optimization engine.
+ */
+export function getWebSocketUrl(path: string = "/ws/train"): string | null {
+  if (typeof window === "undefined") return null;
+
+  // 1. Explicit WS URL environment variable
+  if (process.env.NEXT_PUBLIC_WS_URL) {
+    const base = process.env.NEXT_PUBLIC_WS_URL.replace(/\/$/, "");
+    return `${base}${path}`;
+  }
+
+  // 2. Explicit API URL configured
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+    if (apiUrl.startsWith("https://")) {
+      return `${apiUrl.replace("https://", "wss://")}${path}`;
+    }
+    if (apiUrl.startsWith("http://")) {
+      return `${apiUrl.replace("http://", "ws://")}${path}`;
+    }
+  }
+
+  // 3. Browser protocol check: Browsers strictly block unencrypted ws:// on https:// origins (Mixed Content)
+  if (window.location.protocol === "https:") {
+    return null;
+  }
+
+  // 4. Local development default
+  return `ws://localhost:8000${path}`;
+}
